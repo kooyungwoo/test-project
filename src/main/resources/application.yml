@@ -1,0 +1,31 @@
+# server 설정
+server:
+  port: 8080
+
+spring:
+  application:
+    name: test-project
+
+  # MySQL 접속 설정
+  datasource:
+    url: jdbc:mysql://192.168.45.31:3306/test-db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: testuser
+    password: testuser
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    # HikariCP
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 600000       # 10분
+      max-lifetime: 1800000      # 30분
+      connection-timeout: 30000  # 30초
+      keepalive-time: 300000     # 5분마다 ping
+
+# MyBatis 맵퍼 설정
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: org.example.domain
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    map-underscore-to-camel-case: true

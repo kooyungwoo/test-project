@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <!-- 콘솔 출력 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg\r\n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- SQL 로그 전용 Appender -->
+    <appender name="SQL" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- 색상 강조 -->
+            <pattern>%d{HH:mm:ss} %highlight(%-5level) %cyan(%logger{36}) - %yellow(%msg)\r\n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 파일 출력 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/app.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg\r\n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 루트 로거 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- MyBatis SQL 로그 전용 로거 -->
+    <logger name="org.mybatis" level="DEBUG" additivity="false">
+        <appender-ref ref="SQL"/>
+    </logger>
+    <logger name="org.apache.ibatis" level="DEBUG" additivity="false">
+        <appender-ref ref="SQL"/>
+    </logger>
+    <logger name="org.apache.ibatis.logging" level="DEBUG" additivity="false">
+        <appender-ref ref="SQL"/>
+    </logger>
+    <logger name="org.apache.ibatis.executor.statement" level="DEBUG" additivity="false">
+        <appender-ref ref="SQL"/>
+    </logger>
+    <logger name="org.apache.ibatis.executor.resultset" level="DEBUG" additivity="false">
+        <appender-ref ref="SQL"/>
+    </logger>
+    <logger name="org.apache.ibatis.mapping" level="DEBUG" additivity="false">
+        <appender-ref ref="SQL"/>
+    </logger>
+
+
+    <!-- 특정 패키지 로깅 레벨 조정 -->
+    <logger name="org.example.project.sample" level="DEBUG"/>
+    <logger name="org.example.project.sampleform" level="DEBUG"/>
+</configuration>

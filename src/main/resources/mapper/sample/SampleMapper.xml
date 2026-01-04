@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.project.sample.mapper.SampleMapper">
+
+    <select id="findAll" resultType="org.example.project.sample.entity.SampleEntity">
+        SELECT * FROM sample_table
+    </select>
+
+    <select id="findById" parameterType="int" resultType="org.example.project.sample.entity.SampleEntity">
+        SELECT * FROM sample_table WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.example.project.sample.entity.SampleEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sample_table(name, email) VALUES(#{name}, #{email})
+    </insert>
+
+    <update id="update" parameterType="org.example.project.sample.entity.SampleEntity">
+        UPDATE sample_table SET name=#{name}, email=#{email} WHERE id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM sample_table WHERE id=#{id}
+    </delete>
+
+</mapper>

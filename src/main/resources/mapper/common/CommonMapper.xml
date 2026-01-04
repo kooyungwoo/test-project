@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.project.common.mapper.CommonMapper">
+
+    <select id="findCommonCodeAll" resultType="org.example.project.common.entity.CommonCodeEntity">
+        select a.common_cd
+        , a.common_group_cd
+        , a.common_name
+        , a.common_value
+        , a.view_yn
+        , a.sort_order
+        from common_code a
+        <where>
+            and view_yn = 'Y'
+            <if test="commonGroupCd != null and commonGroupCd != ''">
+                and a.common_group_cd = #{commonGroupCd}
+            </if>
+        </where>
+        order by a.common_group_cd, a.sort_order
+    </select>
+
+</mapper>
