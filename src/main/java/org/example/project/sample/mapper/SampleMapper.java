@@ -1,6 +1,8 @@
 package org.example.project.sample.mapper;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.example.project.sample.entity.SampleEntity;
 
@@ -8,7 +10,7 @@ import org.example.project.sample.entity.SampleEntity;
 public interface SampleMapper {
   List<SampleEntity> findAll();
 
-  SampleEntity findById(int id);
+  Optional<SampleEntity> findById(int id);
 
   void insert(SampleEntity entity);
 

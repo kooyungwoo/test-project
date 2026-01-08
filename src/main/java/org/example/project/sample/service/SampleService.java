@@ -3,6 +3,8 @@ package org.example.project.sample.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
+
+import org.example.project.common.exception.BusinessException;
 import org.example.project.sample.converter.SampleConverter;
 import org.example.project.sample.entity.SampleEntity;
 import org.example.project.sample.mapper.SampleMapper;
@@ -28,7 +30,10 @@ public class SampleService {
   }
 
   public SampleRecord getById(int id) {
-    return converter.toRecord(mapper.findById(id));
+    return mapper
+        .findById(id)
+        .map(converter::toRecord) // 데이터가 있을 때만 Record로 변환
+        .orElseThrow(() -> new BusinessException("해당 데이터를 찾을 수 없습니다.", "NOT_FOUND", 500));
   }
 
   public void add(SampleRecord dataRecord) {
