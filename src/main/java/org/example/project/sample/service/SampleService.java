@@ -3,11 +3,11 @@ package org.example.project.sample.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
-
 import org.example.project.common.exception.BusinessException;
 import org.example.project.sample.converter.SampleConverter;
 import org.example.project.sample.entity.SampleEntity;
 import org.example.project.sample.mapper.SampleMapper;
+import org.example.project.sample.record.SampleMemberDto;
 import org.example.project.sample.record.SampleRecord;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +46,11 @@ public class SampleService {
 
   public void delete(int id) {
     mapper.delete(id);
+  }
+
+  public List<SampleMemberDto> findAllForSampleMember() {
+    return mapper.findAllForSampleMember().stream()
+        .map(converter::toDtoBySampleMemberEntity)
+        .toList();
   }
 }

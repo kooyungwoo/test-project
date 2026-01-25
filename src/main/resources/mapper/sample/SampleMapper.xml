@@ -6,23 +6,28 @@
 <mapper namespace="org.example.project.sample.mapper.SampleMapper">
 
     <select id="findAll" resultType="org.example.project.sample.entity.SampleEntity">
-        SELECT * FROM sample_table
+        SELECT * FROM SAMPLE_TABLE
     </select>
 
     <select id="findById" parameterType="int" resultType="org.example.project.sample.entity.SampleEntity">
-        SELECT * FROM sample_table WHERE id = #{id}
+        SELECT * FROM SAMPLE_TABLE WHERE ID = #{id}
     </select>
 
-    <insert id="insert" parameterType="org.example.project.sample.entity.SampleEntity" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sample_table(name, email) VALUES(#{name}, #{email})
+    <insert id="insert" parameterType="org.example.project.sample.entity.SampleEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO SAMPLE_TABLE(NAME, EMAIL) VALUES(#{name}, #{email})
     </insert>
 
     <update id="update" parameterType="org.example.project.sample.entity.SampleEntity">
-        UPDATE sample_table SET name=#{name}, email=#{email} WHERE id=#{id}
+        UPDATE SAMPLE_TABLE SET NAME=#{name}, EMAIL=#{email} WHERE ID=#{id}
     </update>
 
     <delete id="delete" parameterType="int">
-        DELETE FROM sample_table WHERE id=#{id}
+        DELETE FROM SAMPLE_TABLE WHERE ID=#{id}
     </delete>
+
+    <select id="findAllForSampleMember" resultType="org.example.project.sample.entity.SampleMemberEntity">
+        SELECT * FROM SAMPLE_MEMBER_EXCEL ORDER BY ID
+    </select>
 
 </mapper>

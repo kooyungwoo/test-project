@@ -58,4 +58,5 @@
     <!-- 특정 패키지 로깅 레벨 조정 -->
     <logger name="org.example.project.sample" level="DEBUG"/>
     <logger name="org.example.project.sampleform" level="DEBUG"/>
+    <logger name="org.example.project.common" level="DEBUG"/>
 </configuration>

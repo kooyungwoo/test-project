@@ -34,4 +34,10 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
+    // apache tika for file parsing
+    implementation 'org.apache.tika:tika-core:2.9.0'
+    // Thumbnailator for image processing
+    implementation 'net.coobird:thumbnailator:0.4.19'
+    // EasyExcel for Excel file handling
+    implementation 'com.alibaba:easyexcel:3.3.3'
 }

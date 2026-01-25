@@ -6,20 +6,39 @@
 <mapper namespace="org.example.project.common.mapper.CommonMapper">
 
     <select id="findCommonCodeAll" resultType="org.example.project.common.entity.CommonCodeEntity">
-        select a.common_cd
-        , a.common_group_cd
-        , a.common_name
-        , a.common_value
-        , a.view_yn
-        , a.sort_order
-        from common_code a
+        SELECT A.COMMON_CD
+        , A.COMMON_GROUP_CD
+        , A.COMMON_NAME
+        , A.COMMON_VALUE
+        , A.VIEW_YN
+        , A.SORT_ORDER
+        FROM COMMON_CODE A
         <where>
-            and view_yn = 'Y'
+            AND VIEW_YN = 'Y'
             <if test="commonGroupCd != null and commonGroupCd != ''">
-                and a.common_group_cd = #{commonGroupCd}
+                AND A.COMMON_GROUP_CD = #{commonGroupCd}
             </if>
         </where>
-        order by a.common_group_cd, a.sort_order
+        ORDER BY A.COMMON_GROUP_CD, A.SORT_ORDER
     </select>
+
+    <sql id="commonInsertColumnSql">
+        , REG_ID
+        , REG_DATE
+        , MOD_ID
+        , MOD_DATE
+    </sql>
+
+    <sql id="commonInsertValueSql">
+        , 'test'
+        , NOW()
+        , 'test'
+        , NOW()
+    </sql>
+
+    <sql id="commonUpdateSql">
+        , MOD_ID = 'test'
+        , MOD_DATE = NOW()
+    </sql>
 
 </mapper>

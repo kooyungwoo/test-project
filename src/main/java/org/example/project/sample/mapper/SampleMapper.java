@@ -2,9 +2,9 @@ package org.example.project.sample.mapper;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.example.project.sample.entity.SampleEntity;
+import org.example.project.sample.entity.SampleMemberEntity;
 
 @Mapper
 public interface SampleMapper {
@@ -17,4 +17,6 @@ public interface SampleMapper {
   void update(SampleEntity entity);
 
   void delete(int id);
+
+  List<SampleMemberEntity> findAllForSampleMember();
 }

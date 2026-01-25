@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.project.common.mapper.FileMapper">
+
+    <select id="findFileAll" resultType="org.example.project.common.entity.FileEntity">
+        SELECT A.FILE_ID
+        , A.REF_TYPE
+        , A.REF_ID
+        , A.ORIGIN_NAME
+        , A.SAVED_NAME
+        , A.FILE_PATH
+        , A.EXTENSION
+        , A.FILE_SIZE
+        , A.CONTENT_TYPE
+        , A.DOWNLOAD_COUNT
+        , A.DEL_YN
+        FROM FILE_INFO A
+        <where>
+            AND DEL_YN = 'N'
+            <if test="refType != null and refType != ''">
+                AND A.REF_TYPE = #{refType}
+            </if>
+            <if test="refId != null and refId != ''">
+                AND A.REF_ID = #{refId}
+            </if>
+        </where>
+        ORDER BY A.FILE_ID DESC, A.ORIGIN_NAME
+    </select>
+
+    <insert id="insert" parameterType="org.example.project.common.entity.FileEntity" useGeneratedKeys="true"
+            keyProperty="fileId" keyColumn="FILE_ID">
+        INSERT INTO FILE_INFO (
+        REF_TYPE
+        , REF_ID
+        , ORIGIN_NAME
+        , SAVED_NAME
+        , FILE_PATH
+        , EXTENSION
+        , FILE_SIZE
+        , CONTENT_TYPE
+        , DOWNLOAD_COUNT
+        , DEL_YN
+        <include refid="org.example.project.common.mapper.CommonMapper.commonInsertColumnSql"/>
+        )
+        VALUES (
+        #{refType}
+        , #{refId}
+        , #{originName}
+        , #{savedName}
+        , #{filePath}
+        , #{extension}
+        , #{fileSize}
+        , #{contentType}
+        , #{downloadCount}
+        , #{delYn}
+        <include refid="org.example.project.common.mapper.CommonMapper.commonInsertValueSql"/>
+        )
+    </insert>
+
+    <update id="update" parameterType="org.example.project.common.entity.FileEntity">
+        UPDATE FILE_INFO
+        SET REF_ID = #{refId}
+        <include refid="org.example.project.common.mapper.CommonMapper.commonUpdateSql"/>
+        WHERE FILE_ID = #{fileId}
+    </update>
+
+    <update id="updateDelYn" parameterType="org.example.project.common.entity.FileEntity">
+        UPDATE FILE_INFO
+        SET DEL_YN = #{delYn}
+        <include refid="org.example.project.common.mapper.CommonMapper.commonUpdateSql"/>
+        WHERE FILE_ID = #{fileId}
+    </update>
+
+    <update id="updateDownloadCount" parameterType="org.example.project.common.entity.FileEntity">
+        UPDATE FILE_INFO
+        SET DOWNLOAD_COUNT = DOWNLOAD_COUNT + 1
+        WHERE FILE_ID = #{fileId}
+    </update>
+
+</mapper>

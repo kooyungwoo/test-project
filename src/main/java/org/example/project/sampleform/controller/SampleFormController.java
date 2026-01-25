@@ -4,7 +4,8 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.project.common.record.ResultRecord;
+import org.example.project.common.record.ResultResponse;
+import org.example.project.sampleform.record.SampleFileFormRecord;
 import org.example.project.sampleform.record.SampleFormRecord;
 import org.example.project.sampleform.service.SampleFormService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,15 +47,23 @@ public class SampleFormController {
   @Operation(summary = "샘플 저장", description = "샘플 정보를 저장(등록,수정)합니다")
   @ApiResponse(responseCode = "200", description = "성공적으로 저장됨")
   @PostMapping
-  public ResultRecord add(@RequestBody SampleFormRecord dataRecord) {
+  public ResultResponse add(@RequestBody SampleFormRecord dataRecord) {
     service.save(dataRecord);
-    return new ResultRecord(true, "저장이 완료 되었습니다.");
+    return new ResultResponse(true, "저장이 완료 되었습니다.");
+  }
+
+  @Operation(summary = "샘플 저장", description = "샘플 정보를 저장(등록,수정)합니다")
+  @ApiResponse(responseCode = "200", description = "성공적으로 저장됨")
+  @PostMapping("/with-files")
+  public ResultResponse addWithFiles(@RequestBody SampleFileFormRecord dataRecord) {
+    service.saveWithFiles(dataRecord);
+    return new ResultResponse(true, "저장이 완료 되었습니다.");
   }
 
   @Operation(summary = "샘플 수정", description = "샘플 정보를 수정합니다")
   @ApiResponse(responseCode = "200", description = "성공적으로 수정됨")
   @PutMapping("/{dataId}")
-  public ResultRecord update(@PathVariable int dataId, @RequestBody SampleFormRecord dataRecord) {
+  public ResultResponse update(@PathVariable int dataId, @RequestBody SampleFormRecord dataRecord) {
     // Record는 빌더 형식을 권장하지 않음 생성자 이용 필요 record는 자동으로 모든 필드를 받는 canonical constructor를 생성
     service.update(
         new SampleFormRecord(
@@ -65,14 +74,14 @@ public class SampleFormController {
             dataRecord.printable(),
             null,
             null));
-    return new ResultRecord(true, "수정이 완료 되었습니다.");
+    return new ResultResponse(true, "수정이 완료 되었습니다.");
   }
 
   @Operation(summary = "샘플 삭제", description = "샘플 정보를 삭제합니다")
   @ApiResponse(responseCode = "200", description = "성공적으로 삭제됨")
   @DeleteMapping("/{dataId}")
-  public ResultRecord delete(@PathVariable int dataId) {
+  public ResultResponse delete(@PathVariable int dataId) {
     service.delete(dataId);
-    return new ResultRecord(true, "삭제가 완료 되었습니다.");
+    return new ResultResponse(true, "삭제가 완료 되었습니다.");
   }
 }

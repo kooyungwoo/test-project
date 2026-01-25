@@ -1,6 +1,7 @@
 package org.example.project.common.exception;
 
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.example.project.common.record.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -17,6 +19,7 @@ public class GlobalExceptionHandler {
 
     ErrorResponse response = ErrorResponse.of(e.getStatus(), e.getErrorCode(), e.getMessage());
 
+    // ResponseEntity 통한 응답 반환, 상태 코드도 함께 설정
     return ResponseEntity.status(e.getStatus()).body(response);
   }
 
@@ -47,6 +50,8 @@ public class GlobalExceptionHandler {
   // 3. 그 외 예상치 못한 모든 에러 처리 (500 에러)
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleAllException(Exception e) {
+
+    log.error("서버 내부 오류가 발생했습니다.", e);
 
     ErrorResponse response =
         ErrorResponse.of(
