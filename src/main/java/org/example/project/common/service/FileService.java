@@ -36,6 +36,14 @@ public class FileService {
     this.mapper = mapper;
   }
 
+  /**
+   * 파일 업로드 처리 - 파일 저장(storeFile 메서드) -> DB 저장(uploadFile 메서드) -> 결과 반환(FileResponse).
+   *
+   * @param file 업로드할 MultipartFile 객체
+   * @param refType 참조 시스템 KEY (예: SAMPLE) - 파일 저장 경로 및 DB 저장 시 사용
+   * @param refId 참조 ID (예: 1) - DB 저장 시 사용, null 또는 빈 문자열인 경우 "0"으로 처리하여 DB 저장
+   * @return 업로드된 파일 정보(FileResponse), 업로드 실패 시 null 반환
+   */
   public FileResponse uploadFile(MultipartFile file, String refType, String refId) {
     Map<String, Object> resultMap = storeFile(file, refType);
     return uploadFile(resultMap, refType, refId) > 0
@@ -43,6 +51,15 @@ public class FileService {
         : null;
   }
 
+  /**
+   * 파일 업로드 처리 - DB 저장(insert 메서드) -> 결과 반환(0 or 1).
+   *
+   * @param resultMap storeFile 메서드에서 반환된 파일 저장 결과 정보 (originalName, savedName, uploadPath,
+   *     extension, size, contentType 등) - DB 저장 시 사용
+   * @param refType 참조 시스템 KEY (예: SAMPLE) - DB 저장 시 사용
+   * @param refId 참조 ID (예: 1) - DB 저장 시 사용, null 또는 빈 문자열인 경우 "0"으로 처리하여 DB 저장
+   * @return DB 저장 결과 (성공적으로 저장된 레코드 수), 0인 경우 저장 실패
+   */
   private int uploadFile(Map<String, Object> resultMap, String refType, String refId) {
     if (resultMap != null) {
       // DB 저장
@@ -68,6 +85,15 @@ public class FileService {
     return 0;
   }
 
+  /**
+   * 첨부파일 최종 확정 처리 (refType, refId 업데이트) - 물리적 파일 업로드 없이, 업로드된 파일 정보를 DB에 임시 저장한 후, 실제 데이터 저장 시점에
+   * refType, refId를 업데이트하여 첨부파일과 데이터 간 연관성 확립.
+   *
+   * @param fileList refType, refId가 없는 상태로 업로드된 파일 리스트 (fileId 포함)
+   * @param refType 최종 확정할 참조 시스템 KEY (예: SAMPLE)
+   * @param refId 최종 확정할 참조 ID (예: 1)
+   * @return 업데이트된 레코드 수 (성공적으로 refType, refId가 업데이트된 파일 수)
+   */
   public int attachFilesFinalization(List<FileRecord> fileList, String refType, String refId) {
     int result = 0;
     for (FileRecord file : fileList) {
@@ -78,6 +104,13 @@ public class FileService {
     return result;
   }
 
+  /**
+   * 파일 저장 처리 - 1. MIME 타입 검증 (Tika 사용) 2. 파일명 중복 방지를 위한 UUID 생성 3. 디렉토리 생성 및 파일 저장 4. 결과 반환.
+   *
+   * @param file 업로드할 MultipartFile 객체
+   * @param refType 참조 시스템 KEY (예: SAMPLE) - 파일 저장 경로에 사용
+   * @return 파일 저장 결과 정보 (originalName, savedName, uploadPath, extension, size, contentType 등)
+   */
   private Map<String, Object> storeFile(MultipartFile file, String refType) {
     if (file.isEmpty()) {
       throw new BusinessException("파일이 비어있습니다.", "FILE_EMPTY", 400);

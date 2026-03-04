@@ -17,6 +17,11 @@ public class CommonService {
     this.converter = converter;
   }
 
+  /**
+   * 공통코드 전체 조회.
+   *
+   * @return 공통코드 레코드 목록
+   */
   public List<CommonCodeRecord> getCommonCodeAll() {
     return mapper.findCommonCodeAll().stream().map(converter::toCommonCodeRecord).toList();
   }

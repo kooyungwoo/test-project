@@ -40,4 +40,8 @@ dependencies {
     implementation 'net.coobird:thumbnailator:0.4.19'
     // EasyExcel for Excel file handling
     implementation 'com.alibaba:easyexcel:3.3.3'
+    // Spring Session Redis
+    implementation 'org.springframework.session:spring-session-data-redis'
+    // Redis Client
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
